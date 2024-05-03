@@ -19,9 +19,7 @@ set(PROJ_PATH                       ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Core MCU flags, CPU type, instruction set and FPU setup
 set(cpu_PARAMS 
-    # Other parameters
-    # -mthumb
-    # -mcpu, -mfloat, -mfloat-abi, ...
+
 )
 
 # Sources
@@ -60,9 +58,6 @@ set(include_asm_DIRS)
 set(symbols_SYMB
     # Put here your symbols (preprocessor defines), one in each line
     # Encapsulate them with double quotes for safety purpose
-	"DEBUG"
-    "STM32F746xx"
-    "USE_HAL_DRIVER"
 )
 
 # Symbols definition for each compiler
@@ -111,6 +106,13 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 	${symbols_SYMB}
+  
+  # Preprocessor
+	USE_HAL_DRIVER
+	STM32F746xx
+	USE_STM32746G_DISCO
+
+	$<$<CONFIG:Debug>:DEBUG>
 	$<$<COMPILE_LANGUAGE:C>: ${symbols_c_SYMB}>
 	$<$<COMPILE_LANGUAGE:CXX>: ${symbols_cxx_SYMB}>
 	$<$<COMPILE_LANGUAGE:ASM>: ${symbols_asm_SYMB}>
@@ -127,15 +129,15 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 # Compiler options
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CPU_PARAMETERS}
+    ${cpu_PARAMS}
     ${compiler_OPTS}
 )
 
 # Linker options
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
     -T${linker_script_SRC}
-    ${CPU_PARAMETERS}
-	${linker_OPTS}
+    ${cpu_PARAMS}
+    ${linker_OPTS}
 )
 
 set(EXECUTABLE_NAME
