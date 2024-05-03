@@ -32,10 +32,10 @@ set(sources_SRCS
     ${PROJ_PATH}/Core/Src/stm32f7xx_it.c
     ${PROJ_PATH}/Core/Src/syscall.c
     ${PROJ_PATH}/Core/Src/sysmem.c
-    # ${PROJ_PATH}/Core/Src/system_stm32f7xx.c
+    ${PROJ_PATH}/Core/Src/system_stm32f7xx.c
     
 	# HAL Driver
-    
+	${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c
     
 	# Startup
     ${PROJ_PATH}/Core/Startup/startup_stm32f746nghx.s
@@ -45,6 +45,10 @@ set(sources_SRCS
 set(include_DIRS
     # Put here your include dirs, one in each line, relative to CMakeLists.txt file location
     ${PROJ_PATH}/Core/Inc
+    ${PROJ_PATH}/Drivers/CMSIS/Include
+    ${PROJ_PATH}/Drivers/CMSIS/Device/ST/STM32F7xx/Include
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc
+    ${PROJ_PATH}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy
 )
 
 # Include directories for each compiler
@@ -56,6 +60,9 @@ set(include_asm_DIRS)
 set(symbols_SYMB
     # Put here your symbols (preprocessor defines), one in each line
     # Encapsulate them with double quotes for safety purpose
+	"DEBUG"
+    "STM32F746xx"
+    "USE_HAL_DRIVER"
 )
 
 # Symbols definition for each compiler
@@ -104,9 +111,6 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 	${symbols_SYMB}
-	"DEBUG"
-    "STM32F746xx"
-    "USE_HAL_DRIVER"
 	$<$<COMPILE_LANGUAGE:C>: ${symbols_c_SYMB}>
 	$<$<COMPILE_LANGUAGE:CXX>: ${symbols_cxx_SYMB}>
 	$<$<COMPILE_LANGUAGE:ASM>: ${symbols_asm_SYMB}>
